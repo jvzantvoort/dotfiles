@@ -40,7 +40,7 @@ co = checkout
 st = status -s
 url = config --get remote.origin.url
 root = rev-parse --show-toplevel
-pushthis = push origin $(git rev-parse --abbrev-ref HEAD) --tags
+pushthis = !git push origin $(git rev-parse --abbrev-ref HEAD) --tags
 fp = fetch -p
 
 [push]
