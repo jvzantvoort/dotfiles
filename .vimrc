@@ -1,36 +1,9 @@
-" ==============================================================================
-"
-"         FILE:  ~/.vimrc
-"
-"  DESCRIPTION:  My current vimrc
-"
-"      CREATED:  05/30/2012 11:00:30 AM
-"
-" ==============================================================================
-
-" let s:pluginCFG = expand('~/.vim/plugins.vim')
-let s:localCFG = expand('~/.vim/local.vim')
-let g:currentTime = strftime('%d-%b-%Y')
-let g:currentYear = strftime('%Y')
-
-" if filereadable(s:pluginCFG)
-"    exe "source " . s:pluginCFG
-"endif
-
-" local override {{{
-if filereadable(s:localCFG)
-    exe "source " . s:localCFG
-endif
-" }}}
-
-" General settings {{{
-"-------------------------------------------------------------------------------
-
 "   List of directories which will be searched when using the find type commands
 set path+=**
 
 " Display all the files when matching
 set wildmenu
+set wildignore+=*.pyc,*.pyo,*.so,*.swp,*.zip
 
 " - check |netrw-browse-maps| for more mappings
 let g:netrw_banner=0        " disable annoying banner
@@ -55,7 +28,7 @@ set winminheight=0
 set winminwidth=0
 
 " history:                                 how many command lines are remembered 
-set history=50
+set history=100
 
 " ruler:                                  show cursor position below each window
 set ruler
@@ -69,9 +42,6 @@ set incsearch
 " number:                                     show the line number for each line
 set nu
 
-" backupext:                             file name extension for the backup file
-" exec 'set bex=' . expand(strftime("_jvz:%Y%m%d_%H%M"))
-
 set nobackup                   " do not keep a backup file, use versions instead
 
 set nocompatible
@@ -83,13 +53,11 @@ set vb t_vb=
 set nohlsearch
 
 syntax on
-" }}}
 
-
-set wildignore+=*.pyc,*.pyo,*.so,*.swp,*.zip
 
 colorscheme molokai
 
+" change colors when file is readonly
 function CheckRo()
   if &readonly
     colorscheme pablo
@@ -106,7 +74,7 @@ au BufReadPost * call CheckRo()
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
 
-" Status line {{{
+" Status line
 "--------------------------------------------------------------------------
 set statusline= " clear the statusline for when vimrc is reloaded
 set statusline+=%f\ " file name
@@ -119,9 +87,3 @@ set statusline+=%b,0x%-8B\ " current char
 set statusline+=%c,%l/ "cursor column/total lines
 set statusline+=%L\ %P "total lines/percentage in file
 set ls=2
-# }}}
-"--------------------------------------------------------------------------
-" END
-"--------------------------------------------------------------------------
-
-" vim: foldmethod=marker
