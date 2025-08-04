@@ -96,6 +96,19 @@ if [[ -e "${HOME}/.fzf/bin" ]]; then
   fi
 fi
 
+# nvm
+if [[ -d "${HOME}/.nvm" ]]
+then
+  export NVM_DIR="$HOME/.nvm"
+  if [[ -r "$NVM_DIR/nvm.sh" ]] && [[ -s "$NVM_DIR/nvm.sh" ]]; then
+    source "$NVM_DIR/nvm.sh"
+  fi
+
+  if [[ -r "$NVM_DIR/bash_completion" ]] && [[ -s "$NVM_DIR/bash_completion" ]]; then
+    source "$NVM_DIR/bash_completion"
+  fi
+fi
+
 if command -v path_clean >/dev/null 2>&1; then
   PATH="$(path_clean)"
 fi
