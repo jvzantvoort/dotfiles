@@ -65,6 +65,7 @@ pathmunge "${HOME}/.local/bin"
 
 # golang
 pathmunge "${HOME}/go/bin"
+pathmunge "${HOME}/sdk/go/bin"
 
 if command -v asdf >/dev/null 2>&1; then
   export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
