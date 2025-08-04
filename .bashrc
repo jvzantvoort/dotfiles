@@ -66,6 +66,11 @@ pathmunge "${HOME}/.local/bin"
 # golang
 pathmunge "${HOME}/go/bin"
 
+if command -v asdf >/dev/null 2>&1; then
+  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+  . <(asdf completion bash)
+fi
+
 # krew
 pathmunge "${KREW_ROOT:-$HOME/.krew}/bin"
 
