@@ -1,0 +1,56 @@
+[user]
+name = John van Zantvoort
+email = john@vanzantvoort.org
+
+[color]
+ui = true
+
+[color "branch"]
+current = yellow reverse
+remote = green
+local = yellow
+
+[color "diff"]
+frag = magenta bold
+new = green bold
+meta = yellow bold
+old = red bold
+
+[color "status"]
+untracked = red
+added = yellow
+changed = green
+
+[core]
+editor = vim
+quotepath = false
+
+[diff]
+tool = vimdiff
+
+[difftool]
+prompt = false
+
+[merge]
+tool = vimdiff
+
+[alias]
+lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+co = checkout
+st = status -s
+url = config --get remote.origin.url
+root = rev-parse --show-toplevel
+pushthis = !git push origin $(git rev-parse --abbrev-ref HEAD) --tags
+fp = fetch -p
+
+[push]
+default = simple
+
+[gpg "x509"]
+program = smimesign
+
+[gpg]
+format = x509
+
+[init]
+	defaultBranch = main
