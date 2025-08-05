@@ -40,20 +40,19 @@ set showcmd
 set incsearch
 
 " number:                                     show the line number for each line
-set nu
+set number
 
 set nobackup                   " do not keep a backup file, use versions instead
 
-set nocompatible
-
 " disable beep and flash
-set vb t_vb=
+set visualbell t_vb=
 
 " I don't like search highlighting
 set nohlsearch
 
 syntax on
 
+let g:terraform_fmt_on_save=1
 
 colorscheme molokai
 
@@ -67,12 +66,26 @@ function CheckRo()
     colorscheme molokai
   endif
 endfunction
-au BufReadPost * call CheckRo()
+
+augroup COLORS
+  au BufReadPost * call CheckRo()
+augroup END
+
+if &diff
+	colorscheme molokai
+endif
 
 " when editing muliple file with :sp you can switch between them
 " with <ctrl>-j and <ctrl>-k
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
+
+map <F6> :setlocal spell! spelllang=en_us<cr>
+
+map <s-LEFT> :vertical resize +5 <Cr>
+map <s-RIGHT> :vertical resize -5 <Cr>
+map <s-UP> :resize +5 <Cr>
+map <s-DOWN> :resize -5 <Cr>
 
 " Status line
 "--------------------------------------------------------------------------
@@ -86,4 +99,4 @@ set statusline+=%= "left/right separator
 set statusline+=%b,0x%-8B\ " current char
 set statusline+=%c,%l/ "cursor column/total lines
 set statusline+=%L\ %P "total lines/percentage in file
-set ls=2
+set laststatus=2

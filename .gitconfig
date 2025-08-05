@@ -7,22 +7,23 @@ ui = true
 
 [color "branch"]
 current = yellow reverse
-remote = green
 local = yellow
+remote = green
 
 [color "diff"]
 frag = magenta bold
-new = green bold
 meta = yellow bold
+new = green bold
 old = red bold
 
 [color "status"]
-untracked = red
 added = yellow
 changed = green
+untracked = red
 
 [core]
 editor = vim
+excludesFile = ~/.gitignore
 quotepath = false
 
 [diff]
@@ -36,8 +37,9 @@ tool = vimdiff
 
 [alias]
 lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-co = checkout
+sr = !git diff remotes/origin/$(git rev-parse --abbrev-ref HEAD)..origin/$(git rev-parse --abbrev-ref HEAD)
 st = status -s
+sl = shortlog -s -n
 url = config --get remote.origin.url
 root = rev-parse --show-toplevel
 pushthis = !git push origin $(git rev-parse --abbrev-ref HEAD) --tags
