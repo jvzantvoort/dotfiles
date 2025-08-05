@@ -1,0 +1,553 @@
+snippet wff_tasks
+- name: ${1}
+  ansible.builtin.include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_os_family }}.yml"
+endsnippet
+
+snippet wff_vars
+- name: ${1}
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}.yml"
+endsnippet
+
+snippet tasks
+- name: ${2}
+  ansible.builtin.include_tasks:
+    file: "${1}"
+endsnippet
+
+snippet add_host
+- name: FIXME Add a host (and alternatively a group) to the ansible-playbook in-memory inventory
+  ansible.builtin.add_host:
+    name: ${1}
+    groups: ${2}
+endsnippet
+
+snippet assemble
+- name: FIXME Assemble configuration files from fragments
+  ansible.builtin.assemble:
+    src: ${1}
+    dest: ${2}
+endsnippet
+
+snippet assert
+- name: FIXME Asserts given expressions are true
+  ansible.builtin.assert:
+    that: ${1} is defined
+    success_msg: "${1} is defined"
+    fail_msg: "${1} is NOT defined"
+    quiet: true
+endsnippet
+
+snippet blockinfile
+- name: FIXME Insert/update/remove a text block surrounded by marker lines
+  ansible.builtin.blockinfile:
+    path: ${1}
+    block: |
+      ${2}
+    append_newline: true
+endsnippet
+
+snippet command
+- name: FIXME Execute commands on targets
+  changed_when: false
+  ansible.builtin.command:
+    cmd: ${1}
+    creates: ${2}
+    chdir:
+  register: command_handle
+endsnippet
+
+snippet cron
+- name: FIXME Manage cron.d and crontab entries
+  ansible.builtin.cron:
+    name: ${1}
+    job: ${2}
+    month:
+    weekday:
+    day:
+    hour:
+    minute:
+    state:
+endsnippet
+
+snippet debug
+- name: FIXME Print statements during execution
+  ansible.builtin.debug:
+    msg: ${1}
+endsnippet
+
+snippet dnf
+- name: FIXME Manages packages with the dnf package manager
+  ansible.builtin.dnf:
+    name: "{{ ${2:loop_var} }}"
+    state: present
+  loop:
+    - ${1}
+  loop_control:
+    loop_var: ${2}
+endsnippet
+
+snippet fetch
+- name: FIXME Fetch files from remote nodes
+  ansible.builtin.fetch:
+    src: ${1}
+    dest: ${2}
+    flat: true
+endsnippet
+
+snippet file
+- name: FIXME Manage files and file properties
+  ansible.builtin.file:
+    path: ${1}
+    owner: ${2:'root'}
+    group: ${3:'root'}
+    mode: '0644'
+endsnippet
+
+snippet link
+- name: FIXME Manage files and file properties
+  ansible.builtin.file:
+    src: ${1}
+    dest: ${2}
+    state: link
+endsnippet
+
+snippet directory
+- name: FIXME Manage files and file properties
+  ansible.builtin.file:
+    path: ${1}
+    mode: '0755'
+endsnippet
+
+snippet find
+- name: FIXME Return a list of files based on specific criteria
+  ansible.builtin.find:
+    paths: ${1}
+    patterns: ${2}
+    recurse: true
+  register: found_file
+endsnippet
+
+snippet gather_facts
+- name: FIXME Gathers facts about remote hosts
+  ansible.builtin.gather_facts:
+endsnippet
+
+snippet get_url
+- name: FIXME Downloads files from HTTP, HTTPS, or FTP to node
+  ansible.builtin.get_url:
+    url: ${1}
+    dest: ${2}
+    mode: '0440'
+endsnippet
+
+snippet git
+- name: FIXME Deploy software (or files) from git checkouts
+  ansible.builtin.git:
+    repo: ${1}
+    dest: ${2}
+    update: false
+    version: main
+endsnippet
+
+snippet group
+- name: Add ${1} group
+  ansible.builtin.group:
+    name: ${1}
+    gid: ${2}
+    system: true
+endsnippet
+
+snippet group_by
+- name: FIXME Create Ansible groups based on facts
+  ansible.builtin.group_by:
+    key: "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}"
+endsnippet
+
+snippet hostname
+- name: FIXME Manage hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname_short }}.{{ domain_name }}"
+endsnippet
+
+snippet import_playbook
+- name: FIXME Import a playbook
+  ansible.builtin.import_playbook: ${1}
+endsnippet
+
+snippet import_role
+- name: FIXME Import a role into a play
+  ansible.builtin.import_role:
+    name: ${1}
+endsnippet
+
+snippet import_tasks
+- name: FIXME Import a task list
+  ansible.builtin.import_tasks:
+    file: ${1}
+endsnippet
+
+snippet known_hosts
+- name: FIXME Add or remove a host from the known_hosts file
+  ansible.builtin.known_hosts:
+    path: /etc/ssh/ssh_known_hosts
+    name: ${1}
+    state: present
+    key: "{{ lookup('ansible.builtin.file', '${2}') }}"
+endsnippet
+
+snippet lineinfile
+- name: FIXME Manage lines in text files
+  ansible.builtin.lineinfile:
+    path: ${1}
+    regexp: ${2:'^someline='}
+    line: ${3:someline=inputline}
+endsnippet
+
+snippet meta
+- name: FIXME Execute Ansible actions
+  ansible.builtin.meta: ${2:flush_handlers}
+endsnippet
+
+snippet package
+- name: FIXME Generic OS package manager
+  ansible.builtin.package:
+    name: ${1}
+    state: ${2:present}
+endsnippet
+
+snippet pause
+- name: FIXME Pause playbook execution
+  ansible.builtin.pause:
+    minutes: ${1:0}
+    seconds: ${2:30}
+endsnippet
+
+snippet ping
+- name: FIXME Try to connect to host, verify a usable python and return pong on success
+  ansible.builtin.ping:
+endsnippet
+
+snippet pip
+- name: FIXME Manages Python library dependencies
+  ansible.builtin.pip:
+    name: ${1:black}
+    virtualenv: ${2:/tmp/venv}
+endsnippet
+
+snippet reboot
+- name: FIXME Reboot a machine
+  ansible.builtin.reboot:
+    msg: ${1:going down}
+    reboot_timeout: ${2:120}
+endsnippet
+
+snippet replace
+- name: FIXME Replace all instances of a particular string in a file
+  ansible.builtin.replace:
+    path: ${1}
+    regexp: ${2:'(\s+)string(\s+.*)?$'}
+    replace: '# \\1'
+endsnippet
+
+snippet rpm_key
+- name: FIXME Adds or removes a gpg key from the rpm db
+  ansible.builtin.rpm_key:
+    key: ${1:http://apt.sw.be/RPM-GPG-KEY.dag.txt}
+    state: present
+endsnippet
+
+snippet script
+- name: FIXME Runs a local script on a remote node after transferring it
+  ansible.builtin.script:
+    cmd: ${1}
+endsnippet
+
+snippet service
+- name: Manage ${1} service
+  ansible.builtin.service:
+    name: ${1}
+    enabled: true
+    state: started
+endsnippet
+
+snippet set_fact
+- name: FIXME Set host variable(s) and fact(s).
+  ansible.builtin.set_fact:
+    ${1}: ${2}
+endsnippet
+
+snippet setup
+- name: FIXME Gathers facts about remote hosts
+  ansible.builtin.setup:
+    gather_subset:
+      - '!all'
+      - facter
+endsnippet
+
+snippet shell
+- name: FIXME Execute shell commands on targets
+  ansible.builtin.shell:
+    cmd: ${1}
+    chdir: ${2}
+    creates: ${3}
+endsnippet
+
+snippet slurp
+- name: FIXME Slurps a file from remote nodes
+  ansible.builtin.slurp:
+    src: ${1}
+  register: blob
+- name: FIXME dump data
+  ansible.builtin.debug:
+    msg: "{{ blob['content'] | b64decode }}"
+endsnippet
+
+snippet stat
+- name: FIXME Retrieve file or file system status
+  ansible.builtin.stat:
+    path: ${1}
+  register: st
+endsnippet
+
+snippet tempfile
+- name: FIXME Creates temporary files and directories
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: "${1:tempstring}"
+endsnippet
+
+snippet template
+- name: FIXME Template a file out to a target host
+  ansible.builtin.template:
+    src: ${1}
+    dest: ${2}
+    owner: ${3:'root'}
+    group: ${4:'root'}
+    mode: '0440'
+endsnippet
+
+snippet unarchive
+- name: FIXME Unpacks an archive after (optionally) copying it from the local machine
+  ansible.builtin.unarchive:
+    src: ${1}
+    dest: ${2}
+    remote_src: ${3:false}
+endsnippet
+
+snippet uri
+- name: FIXME Interacts with webservices
+  ansible.builtin.uri:
+    url: ${1}
+    method: GET
+  register: body
+endsnippet
+
+snippet user
+- name: FIXME Manage user accounts
+  ansible.builtin.user:
+    name: ${1}
+    uid: ${2:2000}
+    comment: ${3}
+    create_home: true
+    system: true
+endsnippet
+
+snippet validate
+- name: FIXME Validate role argument specs.
+  ansible.builtin.validate_argument_spec:
+    argument_spec: '{{ required_data }}'
+  vars:
+    required_data:
+      ${1}:
+        description: ${1} description
+        type: str
+        choices: ['foo', 'bar', 'baz']
+        default: 'foo'
+endsnippet
+
+snippet wait_for
+- name: FIXME Waits for a condition before continuing
+  ansible.builtin.wait_for:
+    port: 80
+    delay: 20
+endsnippet
+
+snippet wait_for_connection
+- name: FIXME Waits until remote system is reachable/usable
+  ansible.builtin.wait_for_connection:
+    delay: ${1:30}
+    connect_timeout: ${2:300}
+endsnippet
+
+snippet yum_repository
+- name: FIXME Add or remove YUM repositories
+  ansible.builtin.yum_repository:
+    name: ${1}
+    description: ${2}
+    baseurl: ${3}
+    mirrorlist: ${4}
+endsnippet
+
+snippet authorized_key
+- name: FIXME Adds or removes an SSH authorized key
+  ansible.posix.authorized_key:
+    user: ${1}
+    state: present
+    key: ${2}
+endsnippet
+
+snippet firewalld
+- name: FIXME Manage arbitrary ports/services with firewalld
+  ansible.posix.firewalld:
+    service: ${1}
+    permanent: ${2}
+    state: present
+endsnippet
+
+snippet mount
+- name: FIXME Control active and configured mount points
+  ansible.posix.mount:
+    path: ${2}
+    src: ${1}
+    fstype: ${3:xfs}
+    state: present
+endsnippet
+
+snippet synchronize
+- name: FIXME A wrapper around rsync to make common tasks in your playbooks quick and easy
+  ansible.posix.synchronize:
+    src: ${1}
+    dest: ${2}
+    delete: true
+    recursive: true
+endsnippet
+
+snippet sysctl
+- name: FIXME Manage entries in sysctl.conf.
+  ansible.posix.sysctl:
+    name: ${1}
+    state: present
+    value: ${2}
+endsnippet
+
+snippet archive
+- name: FIXME Creates a compressed archive of one or more files or trees
+  community.general.archive:
+    path:
+      - /tmp/target1
+      - /tmp/target2
+    dest: /tmp/target.tar.gz
+endsnippet
+
+snippet filesystem
+- name: FIXME Makes a filesystem
+  community.general.filesystem:
+    dev: ${1}
+    fstype: ${2:xfs}
+endsnippet
+
+snippet git_config
+- name: FIXME Read and write git configuration
+  community.general.git_config:
+    name: alias.${1}
+    value: ${2:status}
+    scope: ${3:global}
+endsnippet
+
+snippet ini_file
+- name: FIXME Tweak settings in INI files
+  community.general.ini_file:
+    path: ${1}
+    section: ${2}
+    option: ${3}
+endsnippet
+
+snippet kernel_blacklist
+- name: FIXME Blacklist kernel modules
+  community.general.kernel_blacklist:
+    blacklist_file:
+    name: ${1}
+    state: present
+endsnippet
+
+snippet lvg
+- name: FIXME Configure LVM volume groups
+  community.general.lvg:
+    vg: ${1}
+    pvs: ${2}
+endsnippet
+
+snippet lvol
+- name: FIXME Configure LVM logical volumes
+  community.general.lvol:
+    vg: ${1}
+    lv: ${2}
+    size: ${3:512} # logical extents, M/G/T
+    shrink: false
+endsnippet
+
+snippet parted
+- name: FIXME Configure block device partitions
+  community.general.parted:
+    device: /dev/${1}
+    number: 1
+    state: present
+    flags: [ lvm ]
+    part_end: 100%FREE
+endsnippet
+
+snippet read_csv
+- name: FIXME Read a CSV file
+  community.general.read_csv:
+    path: ${1}
+    fieldnames: ${2}
+  register: csvdata
+  delegate_to: localhost
+endsnippet
+
+snippet shutdown
+- name: FIXME Shut down a machine
+  community.general.shutdown:
+    msg: ${1}
+    delay: ${2}
+endsnippet
+
+snippet ssh_config
+- name: FIXME Manage SSH config for user
+  community.general.ssh_config:
+    user: ${1}
+    host: ${2}
+    hostname: ${3}
+    port: 22
+    state: present
+endsnippet
+
+snippet sudoers
+- name: FIXME Manage sudoers files
+  community.general.sudoers:
+    name: ${1:some-description}
+    commands: ${2}
+    user: ${3}
+    state: present
+endsnippet
+
+snippet copy
+- name: FIXME Copy file with owner and permission, using symbolic representation
+  ansible.builtin.copy:
+    src: ${1}
+    dest: ${2}
+    owner: root
+    group: root
+    mode: '0644'
+endsnippet
