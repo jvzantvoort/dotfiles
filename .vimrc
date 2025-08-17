@@ -100,3 +100,7 @@ set statusline+=%b,0x%-8B\ " current char
 set statusline+=%c,%l/ "cursor column/total lines
 set statusline+=%L\ %P "total lines/percentage in file
 set laststatus=2
+
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+set list
+

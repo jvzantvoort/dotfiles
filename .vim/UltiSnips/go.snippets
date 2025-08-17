@@ -2,25 +2,21 @@
 
 priority 10
 
-snippet Ask "Ask a question" b
-import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-)
-
+snippet sn_Ask "Ask a question" b
+// requires:
+// - "bufio"
+// - "fmt"
+// - "os"
+// - "strings"
 func Ask(question string) string {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Printf("%s: ", question)
 	text, _ := reader.ReadString('\n')
 	return strings.TrimSuffix(text, "\n")
 }
-
 endsnippet
 
-snippet CopyMap "Function Copy a map of strings/strings" b
-
+snippet sn_CopyMap "Function Copy a map of strings/strings" b
 func CopyMap(src map[string]string) map[string]string {
 	if src == nil {
 		return nil
@@ -36,7 +32,7 @@ func CopyMap(src map[string]string) map[string]string {
 }
 endsnippet
 
-snippet DeleteSliceInt "Function Delete a integer from a list of integers" b
+snippet sn_DeleteSliceInt "Function Delete a integer from a list of integers" b
 // DeleteSlice removes an element at a specific index of an slice. An error is
 // return in case the index is out of bounds or if the slice is nil or empty.
 func DeleteSliceInt(s []int, i int) ([]int, error) {
@@ -52,7 +48,7 @@ func DeleteSliceInt(s []int, i int) ([]int, error) {
 
 endsnippet
 
-snippet ExitOnError "Function ExitOnError" b
+snippet sn_ExitOnError "Function ExitOnError" b
 // ExitOnError check error and exit if not nil
 func ExitOnError(err error) {
 	if err != nil {
@@ -63,11 +59,9 @@ func ExitOnError(err error) {
 
 endsnippet
 
-snippet GetHomeDir "Function GetHomeDir" b
-import (
-	"os/user"
-)
-
+snippet sn_GetHomeDir "Function GetHomeDir" b
+// requires:
+// - "os/user"
 func GetHomeDir() (string, error) {
 	usr, err := user.Current()
 	if err == nil {
@@ -77,10 +71,9 @@ func GetHomeDir() (string, error) {
 }
 endsnippet
 
-snippet GetMatches "Function GetMatches" b
-
-import "regexp"
-
+snippet sn_GetMatches "Function GetMatches" b
+// requires:
+// - "regexp"
 // GetMatches parses each line and sticks the findings in a map
 func GetMatches(regEx string, lines []string) (paramsMap map[string]string) {
 	var compRegEx = regexp.MustCompile(regEx)
@@ -99,12 +92,10 @@ func GetMatches(regEx string, lines []string) (paramsMap map[string]string) {
 }
 endsnippet
 
-snippet LoadStringLines "Function load stringlines from a file" b
-import (
-	"io/ioutil"
-	"strings"
-)
-
+snippet sn_LoadStringLines "Function load stringlines from a file" b
+// requires:
+// - "io/ioutil"
+// - "strings"
 func LoadStringLines(target string) ([]string, error) {
 	var retv []string
 	content, err := ioutil.ReadFile(target)
@@ -117,10 +108,9 @@ func LoadStringLines(target string) ([]string, error) {
 	}
 	return retv, nil
 }
-
 endsnippet
 
-snippet MaxSliceInt "Function return maximum int from a list" b
+snippet sn_MaxSliceInt "Function return maximum int from a list" b
 // MaxSliceInt return the maximum element of slice s or an error in case the s is
 // nil or empty
 func MaxSliceInt(s []int) (int, error) {
@@ -139,7 +129,7 @@ func MaxSliceInt(s []int) (int, error) {
 }
 endsnippet
 
-snippet MinSliceInt "Function return minimum int from a list" b
+snippet sn_MinSliceInt "Function return minimum int from a list" b
 // MaxSliceInt return the minimum element of slice s or an error in case the s is
 // nil or empty
 func MinSliceInt(s []int) (int, error) {
@@ -158,11 +148,11 @@ func MinSliceInt(s []int) (int, error) {
 }
 endsnippet
 
-snippet MkdirAll "Function recursively create a directory" b
-func MkdirAll(path string, mode int) {
+snippet sn_mkdirp "Function recursively create a directory" b
+func Mkdirp(path string, mode int) {
 
-	log.Debugf("MkdirAll: start")
-	defer log.Debugf("MkdirAll: end")
+	log.Debugf("Mkdirp: start")
+	defer log.Debugf("Mkdirp: end")
 
 	stat, err := os.Stat(path)
 
@@ -183,14 +173,14 @@ func MkdirAll(path string, mode int) {
 }
 endsnippet
 
-snippet NewStruct "Create a New function for a struct" b
+snippet sn_NewStruct "Create a New function for a struct" b
 func New${1}() *${1} {
 	retv := &${1}{}
 	return retv
 }
 endsnippet
 
-snippet ReverseSliceInt "Reverse a slice of ints" b
+snippet sn_ReverseSliceInt "Reverse a slice of ints" b
 func ReverseSliceInt(s []int) []int {
 	if len(s) < 2 {
 		return s
@@ -204,18 +194,16 @@ func ReverseSliceInt(s []int) []int {
 }
 endsnippet
 
-snippet Sha256ChecksumString "Return the sha256 sum of a string" b
-import (
-	"crypto/sha256"
-	"fmt"
-)
-
+snippet sn_Sha256ChecksumString "Return the sha256 sum of a string" b
+// requires:
+// - "crypto/sha256"
+// - "fmt"
 func Sha256ChecksumString(s string) string {
 	return fmt.Sprintf("%x", sha256.Sum256([]byte(s)))
 }
 endsnippet
 
-snippet SliceContainsInt "Return true if slice contains an int" b
+snippet sn_SliceContainsInt "Return true if slice contains an int" b
 // SliceContainsInt return true if a slice contains a number.
 func SliceContainsInt(s []int, x int) bool {
 	if len(s) == 0 {
@@ -230,13 +218,9 @@ func SliceContainsInt(s []int, x int) bool {
 }
 endsnippet
 
-snippet targetExists "Function targets exists" b
-import (
-	"os"
-
-	"google.golang.org/appengine/log"
-)
-
+snippet sn_targetExists "Function targets exists" b
+// requires:
+// - "os"
 // targetExists return true if target exists
 func targetExists(targetpath string) bool {
 	_, err := os.Stat(targetpath)
@@ -251,7 +235,7 @@ func targetExists(targetpath string) bool {
 
 endsnippet
 
-snippet UniqueSliceInt "Function return list of unique ints" b
+snippet sn_UniqueSliceInt "Function return list of unique ints" b
 func UniqueSliceInt(s []int) []int {
 	if len(s) < 2 {
 		return s
@@ -273,14 +257,12 @@ func UniqueSliceInt(s []int) []int {
 }
 endsnippet
 
-snippet Which "Return command path" b
-import (
-	"fmt"
-	"os"
-	"path"
-	"strings"
-)
-
+snippet sn_Which "Return command path" b
+// requires:
+// - "fmt"
+// - "os"
+// - "path"
+// - "strings"
 // Which returns a command's path
 func Which(command string) (string, error) {
 	for _, dirname := range strings.Split(os.Getenv("PATH"), ":") {
@@ -303,6 +285,48 @@ func Which(command string) (string, error) {
 		}
 	}
 	return command, fmt.Errorf("Command %s not found", command)
+}
+endsnippet
+
+snippet sn_readlines "Read lines from a text file" b
+// requires:
+// - "bufio"
+// - "fmt"
+// - "os"
+// ReadLines reads a text file line by line and returns a slice of strings.
+// It returns an error if the file does not exist or is not readable.
+func ReadLines(filePath string) ([]string, error) {
+	// Check if the file exists and is not a directory
+	fileInfo, err := os.Stat(filePath)
+	if os.IsNotExist(err) {
+		return nil, fmt.Errorf("file does not exist: %s", filePath)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("could not stat file: %w", err)
+	}
+	if fileInfo.IsDir() {
+		return nil, fmt.Errorf("path is a directory, not a file: %s", filePath)
+	}
+
+	// Open file for reading
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file: %w", err)
+	}
+	defer file.Close()
+
+	// Read lines
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error reading file: %w", err)
+	}
+
+	return lines, nil
 }
 endsnippet
 
