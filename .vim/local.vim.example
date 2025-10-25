@@ -1,6 +1,0 @@
-let g:author = "Your name"
-let g:copyright = ""
-let g:license = "MIT"
-let g:mailaddress = "lala@example.com"
-let g:company = ""
-let g:enable_airline = 1
