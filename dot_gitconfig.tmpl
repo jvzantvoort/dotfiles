@@ -1,6 +1,6 @@
 [user]
-name = John van Zantvoort
-email = john@vanzantvoort.org
+name = {{ .name | quote }}
+email = {{ .email | quote }}
 
 [color]
 ui = true
