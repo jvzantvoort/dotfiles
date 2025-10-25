@@ -1,0 +1,17 @@
+
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/home/jvzantvoort/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/home/jvzantvoort/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<
+. "$HOME/.cargo/env"

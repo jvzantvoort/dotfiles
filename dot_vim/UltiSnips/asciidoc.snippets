@@ -1,0 +1,34 @@
+priority 10
+
+snippet header "File header"  b
+:Author:      ${1:`!v g:snips_author`}
+:Date:        ${2:`!v strftime("%Y-%m-%d")`}
+:keywords:    ${3:keywords}
+:description: ${4:description}
+
+= ${5:title}
+
+$0
+
+endsnippet
+
+snippet userstory "User story" b
+== Story: ${1:shortname}
+
+_Story narrative_
+
+* As a *${2:role}*
+* I want ${3:feature}
+* So that ${4:benefit}
+
+_Acceptance Criteria_
+
+* Given ${5:context}
+* When ${6:events}
+* Then ${7:outcome}
+endsnippet
+
+snippet image "Image" !b
+image::${1:imagepath}[${2:alt text}]
+endsnippet
+

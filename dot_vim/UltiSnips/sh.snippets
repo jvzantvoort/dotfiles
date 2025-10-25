@@ -1,0 +1,122 @@
+priority 10
+
+global !p
+import vim
+
+# Tests for the existence of a variable declared by Vim's filetype detection
+# suggesting the type of shell script of the current file
+def testShell(scope, shell):
+	return vim.eval("exists('" + scope + ":is_" + shell + "')")
+
+# Loops over the possible variables, checking for global variables
+# first since they indicate an override by the user.
+def getShell():
+	for scope in ["g", "b"]:
+		for shell in ["bash", "posix", "sh", "kornshell"]:
+			if testShell(scope, shell) == "1":
+				if shell == "kornshell":
+					return "ksh"
+				if shell == "posix":
+					return "sh"
+				return shell
+	return "sh"
+endglobal
+
+###########################################################################
+#                            TextMate Snippets                            #
+###########################################################################
+snippet #! "#!/usr/bin/env (!env)" b
+`!p snip.rv = '#!/usr/bin/env ' + getShell() + "\n" `
+endsnippet
+
+snippet sbash "safe bash options" b
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+`!p snip.rv ='\n\n' `
+endsnippet
+
+snippet header "A header" b
+`!p snip.rv = '#!/usr/bin/env ' + getShell() + "\n" `
+# ---------------------------------------------------------------------------- #
+#
+#         FILE:  `!p snip.rv = snip.basename`
+#
+#        USAGE:  
+#
+#  DESCRIPTION:  ${2:description}
+#
+#      CREATED:  `!v strftime("%x")`
+#
+# ---------------------------------------------------------------------------- #
+
+C_SCRIPTPATH="$(readlink -f "\$0")"
+C_SCRIPTNAME="$(basename "${C_SCRIPTPATH}" .sh)"
+C_SCRIPTDIR="$(dirname "${C_SCRIPTPATH}")"
+
+readonly C_SCRIPTPATH
+readonly C_SCRIPTNAME
+readonly C_SCRIPTDIR
+
+$0
+endsnippet
+
+snippet main "Main block" b
+#------------------------------------------------------------------------------#
+#                                    Main                                      #
+#------------------------------------------------------------------------------#
+$0
+#------------------------------------------------------------------------------#
+#                                  The End                                     #
+#------------------------------------------------------------------------------#
+endsnippet
+
+snippet mkst "Create staging area" b
+function mkstaging_area()
+# ------------------------------------------------------------------------------
+#         NAME:  mkstaging_area
+#  DESCRIPTION:  Creates a temporary staging area and set the variable
+#                $STAGING_AREA to point to it
+#   PARAMETERS:  STRING, mktemp template (optional)
+#      RETURNS:  0, oke
+#                1, not oke
+# ------------------------------------------------------------------------------
+{
+  local template
+  local retv
+
+  template="/tmp/${1:stage}.XXXXXXXX"
+  retv="0"
+
+  STAGING_AREA="$(mktemp -d ${template})"
+  retv="$?"
+
+
+  if [[ "$retv" == "0" ]]
+  then
+    return 0
+
+  else
+    return 1
+
+  fi
+
+} # end: mkstaging_area
+
+$0
+endsnippet
+
+snippet func "function() {...}" b
+function ${1:function}()
+{
+	${0:${VISUAL}}
+} # end: ${1}
+endsnippet
+
+snippet const "Constant" b
+${1}="${2:value}"
+
+readonly ${1}
+endsnippet
+
+# vim:ft=snippets:
