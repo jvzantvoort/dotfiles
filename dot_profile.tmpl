@@ -5,11 +5,11 @@
 # !! Contents within this block are managed by juliaup !!
 
 case ":$PATH:" in
-    *:/home/jvzantvoort/.juliaup/bin:*)
+    *:/home/{{ .username }}/.juliaup/bin:*)
         ;;
 
     *)
-        export PATH=/home/jvzantvoort/.juliaup/bin${PATH:+:${PATH}}
+        export PATH=/home/{{ .username }}/.juliaup/bin${PATH:+:${PATH}}
         ;;
 esac
 
