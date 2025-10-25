@@ -1,0 +1,10 @@
+[user]
+mailaddress = john@vanzantvoort.org
+company     = JDC
+copyright   = John van Zantvoort
+license     = MIT
+user        = jvzantvoort
+username    = John van Zantvoort
+
+[bash]
+description = Bash script

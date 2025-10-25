@@ -1,0 +1,333 @@
+# Snippets for Go
+
+priority 10
+
+snippet sn_Ask "Ask a question" b
+// requires:
+// - "bufio"
+// - "fmt"
+// - "os"
+// - "strings"
+func Ask(question string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf("%s: ", question)
+	text, _ := reader.ReadString('\n')
+	return strings.TrimSuffix(text, "\n")
+}
+endsnippet
+
+snippet sn_CopyMap "Function Copy a map of strings/strings" b
+func CopyMap(src map[string]string) map[string]string {
+	if src == nil {
+		return nil
+	}
+	// Initialize a new map
+	dst := make(map[string]string)
+	// range through the source map
+	// and copy each element to the new one
+	for k, v := range src {
+		dst[k] = v
+	}
+	return dst
+}
+endsnippet
+
+snippet sn_DeleteSliceInt "Function Delete a integer from a list of integers" b
+// DeleteSlice removes an element at a specific index of an slice. An error is
+// return in case the index is out of bounds or if the slice is nil or empty.
+func DeleteSliceInt(s []int, i int) ([]int, error) {
+	if len(s) == 0 {
+		return nil, errors.New("Cannot delete an element from a nil or empty slice")
+	}
+	if i < 0 || i > len(s)-1 {
+		return nil, errors.New("Index out of bounds")
+	}
+
+	return append(s[:i], s[i+1:]...), nil
+}
+
+endsnippet
+
+snippet sn_ExitOnError "Function ExitOnError" b
+// ExitOnError check error and exit if not nil
+func ExitOnError(err error) {
+	if err != nil {
+		log.Errorf("error %v\n", err)
+		os.Exit(1)
+	}
+}
+
+endsnippet
+
+snippet sn_GetHomeDir "Function GetHomeDir" b
+// requires:
+// - "os/user"
+func GetHomeDir() (string, error) {
+	usr, err := user.Current()
+	if err == nil {
+		return usr.HomeDir, nil
+	}
+	return "", err
+}
+endsnippet
+
+snippet sn_GetMatches "Function GetMatches" b
+// requires:
+// - "regexp"
+// GetMatches parses each line and sticks the findings in a map
+func GetMatches(regEx string, lines []string) (paramsMap map[string]string) {
+	var compRegEx = regexp.MustCompile(regEx)
+
+	paramsMap = make(map[string]string)
+
+	for _, line := range lines {
+		match := compRegEx.FindStringSubmatch(line)
+		for i, name := range compRegEx.SubexpNames() {
+			if i > 0 && i <= len(match) {
+				paramsMap[name] = match[i]
+			}
+		}
+	}
+	return
+}
+endsnippet
+
+snippet sn_LoadStringLines "Function load stringlines from a file" b
+// requires:
+// - "io/ioutil"
+// - "strings"
+func LoadStringLines(target string) ([]string, error) {
+	var retv []string
+	content, err := ioutil.ReadFile(target)
+	if err != nil {
+		return retv, err
+	}
+
+	for _, line := range strings.Split(string(content), "\n") {
+		retv = append(retv, line)
+	}
+	return retv, nil
+}
+endsnippet
+
+snippet sn_MaxSliceInt "Function return maximum int from a list" b
+// MaxSliceInt return the maximum element of slice s or an error in case the s is
+// nil or empty
+func MaxSliceInt(s []int) (int, error) {
+	if len(s) == 0 {
+		return 0, errors.New("cannot find the maximum of a nil or empty slice")
+	}
+
+	max := s[0]
+	for k := range s {
+		if s[k] > max {
+			max = s[k]
+		}
+	}
+
+	return max, nil
+}
+endsnippet
+
+snippet sn_MinSliceInt "Function return minimum int from a list" b
+// MaxSliceInt return the minimum element of slice s or an error in case the s is
+// nil or empty
+func MinSliceInt(s []int) (int, error) {
+	if len(s) == 0 {
+		return 0, errors.New("cannot find the minimum of a nil or empty slice")
+	}
+
+	min := s[0]
+	for k := range s {
+		if s[k] < min {
+			min = s[k]
+		}
+	}
+
+	return min, nil
+}
+endsnippet
+
+snippet sn_mkdirp "Function recursively create a directory" b
+func Mkdirp(path string, mode int) {
+
+	log.Debugf("Mkdirp: start")
+	defer log.Debugf("Mkdirp: end")
+
+	stat, err := os.Stat(path)
+
+	// we found something
+	if err == nil {
+		// already exists
+		if stat.IsDir() {
+			log.Debugf("found dir: %s", path)
+			return
+		} else {
+			log.Errorf("found target: %s but it is not a directory", path)
+		}
+	}
+
+	mode_oct := os.FileMode(mode)
+	os.MkdirAll(path, mode_oct)
+
+}
+endsnippet
+
+snippet sn_NewStruct "Create a New function for a struct" b
+func New${1}() *${1} {
+	retv := &${1}{}
+	return retv
+}
+endsnippet
+
+snippet sn_ReverseSliceInt "Reverse a slice of ints" b
+func ReverseSliceInt(s []int) []int {
+	if len(s) < 2 {
+		return s
+	}
+
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+
+	return s
+}
+endsnippet
+
+snippet sn_Sha256ChecksumString "Return the sha256 sum of a string" b
+// requires:
+// - "crypto/sha256"
+// - "fmt"
+func Sha256ChecksumString(s string) string {
+	return fmt.Sprintf("%x", sha256.Sum256([]byte(s)))
+}
+endsnippet
+
+snippet sn_SliceContainsInt "Return true if slice contains an int" b
+// SliceContainsInt return true if a slice contains a number.
+func SliceContainsInt(s []int, x int) bool {
+	if len(s) == 0 {
+		return false
+	}
+	for k := range s {
+		if s[k] == x {
+			return true
+		}
+	}
+	return false
+}
+endsnippet
+
+snippet sn_targetExists "Function targets exists" b
+// requires:
+// - "os"
+// targetExists return true if target exists
+func targetExists(targetpath string) bool {
+	_, err := os.Stat(targetpath)
+	if err == nil {
+		return true
+	}
+	if !os.IsNotExist(err) {
+		log.Errorf("cannot stat %s: %q", targetpath, err)
+	}
+	return false
+}
+
+endsnippet
+
+snippet sn_UniqueSliceInt "Function return list of unique ints" b
+func UniqueSliceInt(s []int) []int {
+	if len(s) < 2 {
+		return s
+	}
+
+	seen := make(map[int]struct{})
+
+	j := 0
+	for k := range s {
+		if _, ok := seen[s[k]]; ok {
+			continue
+		}
+		seen[s[k]] = struct{}{}
+		s[j] = s[k]
+		j++
+	}
+
+	return s[:j]
+}
+endsnippet
+
+snippet sn_Which "Return command path" b
+// requires:
+// - "fmt"
+// - "os"
+// - "path"
+// - "strings"
+// Which returns a command's path
+func Which(command string) (string, error) {
+	for _, dirname := range strings.Split(os.Getenv("PATH"), ":") {
+		fullpath := path.Join(dirname, command)
+
+		stat, err := os.Stat(fullpath)
+		if err != nil {
+			continue
+		}
+
+		switch mode := stat.Mode(); {
+		case mode.IsDir():
+			continue
+		case mode&0100 != 0:
+			return fullpath, nil
+		case mode&0010 != 0:
+			return fullpath, nil
+		case mode&0001 != 0:
+			return fullpath, nil
+		}
+	}
+	return command, fmt.Errorf("Command %s not found", command)
+}
+endsnippet
+
+snippet sn_readlines "Read lines from a text file" b
+// requires:
+// - "bufio"
+// - "fmt"
+// - "os"
+// ReadLines reads a text file line by line and returns a slice of strings.
+// It returns an error if the file does not exist or is not readable.
+func ReadLines(filePath string) ([]string, error) {
+	// Check if the file exists and is not a directory
+	fileInfo, err := os.Stat(filePath)
+	if os.IsNotExist(err) {
+		return nil, fmt.Errorf("file does not exist: %s", filePath)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("could not stat file: %w", err)
+	}
+	if fileInfo.IsDir() {
+		return nil, fmt.Errorf("path is a directory, not a file: %s", filePath)
+	}
+
+	// Open file for reading
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file: %w", err)
+	}
+	defer file.Close()
+
+	// Read lines
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error reading file: %w", err)
+	}
+
+	return lines, nil
+}
+endsnippet
+
+# vim:ft=snippets:

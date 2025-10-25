@@ -1,0 +1,236 @@
+"   List of directories which will be searched when using the find type commands
+set path+=**
+
+" Display all the files when matching
+set wildmenu
+set wildignore+=*.pyc,*.pyo,*.so,*.swp,*.zip
+
+" - check |netrw-browse-maps| for more mappings
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+
+" When on, splitting a window will put the new window below the current one.
+set splitbelow
+
+" When on, splitting a window will put the new window right of the current one.
+set splitright
+
+" backspace:             specifies what <BS>, CTRL-W, etc. can do in Insert mode
+set backspace=2
+
+" whichwrap:        list of flags specifying which commands wrap to another line
+set whichwrap=[,]
+
+" winminheight:                      minimal number of lines used for any window
+set winminheight=0
+set winminwidth=0
+
+" history:                                 how many command lines are remembered 
+set history=100
+
+" ruler:                                  show cursor position below each window
+set ruler
+
+" showcmd:                        show (partial) command keys in the status line
+set showcmd
+
+" incsearch:                          show match for partly typed search command
+set incsearch
+
+" number:                                     show the line number for each line
+set number
+
+set nobackup                   " do not keep a backup file, use versions instead
+
+" disable beep and flash
+set visualbell t_vb=
+
+" I don't like search highlighting
+set nohlsearch
+
+syntax on
+
+let g:terraform_fmt_on_save=1
+
+colorscheme molokai
+
+" change colors when file is readonly
+function CheckRo()
+  if &readonly
+    colorscheme pablo
+  elseif &diff
+    colorscheme diff
+  else
+    colorscheme molokai
+  endif
+endfunction
+
+augroup COLORS
+  au BufReadPost * call CheckRo()
+augroup END
+
+if &diff
+	colorscheme molokai
+endif
+
+" when editing muliple file with :sp you can switch between them
+" with <ctrl>-j and <ctrl>-k
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+
+map <F6> :setlocal spell! spelllang=en_us<cr>
+
+map <s-LEFT> :vertical resize +5 <Cr>
+map <s-RIGHT> :vertical resize -5 <Cr>
+map <s-UP> :resize +5 <Cr>
+map <s-DOWN> :resize -5 <Cr>
+
+" Status line
+"--------------------------------------------------------------------------
+set statusline= " clear the statusline for when vimrc is reloaded
+set statusline+=%f\ " file name
+set statusline+=%h%m%r%w " flags
+set statusline+=[%{strlen(&ft)?&ft:'none'}, " filetype
+set statusline+=%{strlen(&fenc)?&fenc:&enc}, " encoding
+set statusline+=%{&fileformat}] " file format
+set statusline+=%= "left/right separator
+set statusline+=%b,0x%-8B\ " current char
+set statusline+=%c,%l/ "cursor column/total lines
+set statusline+=%L\ %P "total lines/percentage in file
+set laststatus=2
+
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+set list
+
+" Put this in your .vimrc or a plugin file
+function! ExpandAnsibleFQCN()
+
+  " ansible.builtin
+  % s/^\(\s\+\)add_host:/\1ansible.builtin.add_host:/gc
+  % s/^\(\s\+\)apt:/\1ansible.builtin.apt:/gc
+  % s/^\(\s\+\)apt_key:/\1ansible.builtin.apt_key:/gc
+  % s/^\(\s\+\)apt_repository:/\1ansible.builtin.apt_repository:/gc
+  % s/^\(\s\+\)assemble:/\1ansible.builtin.assemble:/gc
+  % s/^\(\s\+\)assert:/\1ansible.builtin.assert:/gc
+  % s/^\(\s\+\)async_status:/\1ansible.builtin.async_status:/gc
+  % s/^\(\s\+\)blockinfile:/\1ansible.builtin.blockinfile:/gc
+  % s/^\(\s\+\)command:/\1ansible.builtin.command:/gc
+  % s/^\(\s\+\)copy:/\1ansible.builtin.copy:/gc
+  % s/^\(\s\+\)cron:/\1ansible.builtin.cron:/gc
+  % s/^\(\s\+\)debconf:/\1ansible.builtin.debconf:/gc
+  % s/^\(\s\+\)debug:/\1ansible.builtin.debug:/gc
+  % s/^\(\s\+\)dnf:/\1ansible.builtin.dnf:/gc
+  % s/^\(\s\+\)dpkg_selections:/\1ansible.builtin.dpkg_selections:/gc
+  % s/^\(\s\+\)expect:/\1ansible.builtin.expect:/gc
+  % s/^\(\s\+\)fail:/\1ansible.builtin.fail:/gc
+  % s/^\(\s\+\)fetch:/\1ansible.builtin.fetch:/gc
+  % s/^\(\s\+\)file:/\1ansible.builtin.file:/gc
+  % s/^\(\s\+\)find:/\1ansible.builtin.find:/gc
+  % s/^\(\s\+\)gather_facts:/\1ansible.builtin.gather_facts:/gc
+  % s/^\(\s\+\)getent:/\1ansible.builtin.getent:/gc
+  % s/^\(\s\+\)get_url:/\1ansible.builtin.get_url:/gc
+  % s/^\(\s\+\)git:/\1ansible.builtin.git:/gc
+  % s/^\(\s\+\)group:/\1ansible.builtin.group:/gc
+  % s/^\(\s\+\)group_by:/\1ansible.builtin.group_by:/gc
+  % s/^\(\s\+\)hostname:/\1ansible.builtin.hostname:/gc
+  % s/^\(\s\+\)import_playbook:/\1ansible.builtin.import_playbook:/gc
+  % s/^\(\s\+\)import_role:/\1ansible.builtin.import_role:/gc
+  % s/^\(\s\+\)import_tasks:/\1ansible.builtin.import_tasks:/gc
+  % s/^\(\s\+\)include:/\1ansible.builtin.include:/gc
+  % s/^\(\s\+\)include_role:/\1ansible.builtin.include_role:/gc
+  % s/^\(\s\+\)include_tasks:/\1ansible.builtin.include_tasks:/gc
+  % s/^\(\s\+\)include_vars:/\1ansible.builtin.include_vars:/gc
+  % s/^\(\s\+\)iptables:/\1ansible.builtin.iptables:/gc
+  % s/^\(\s\+\)known_hosts:/\1ansible.builtin.known_hosts:/gc
+  % s/^\(\s\+\)lineinfile:/\1ansible.builtin.lineinfile:/gc
+  % s/^\(\s\+\)meta:/\1ansible.builtin.meta:/gc
+  % s/^\(\s\+\)package:/\1ansible.builtin.package:/gc
+  % s/^\(\s\+\)package_facts:/\1ansible.builtin.package_facts:/gc
+  % s/^\(\s\+\)pause:/\1ansible.builtin.pause:/gc
+  % s/^\(\s\+\)ping:/\1ansible.builtin.ping:/gc
+  % s/^\(\s\+\)pip:/\1ansible.builtin.pip:/gc
+  % s/^\(\s\+\)raw:/\1ansible.builtin.raw:/gc
+  % s/^\(\s\+\)reboot:/\1ansible.builtin.reboot:/gc
+  % s/^\(\s\+\)replace:/\1ansible.builtin.replace:/gc
+  % s/^\(\s\+\)rpm_key:/\1ansible.builtin.rpm_key:/gc
+  % s/^\(\s\+\)script:/\1ansible.builtin.script:/gc
+  % s/^\(\s\+\)service:/\1ansible.builtin.service:/gc
+  % s/^\(\s\+\)service_facts:/\1ansible.builtin.service_facts:/gc
+  % s/^\(\s\+\)set_fact:/\1ansible.builtin.set_fact:/gc
+  % s/^\(\s\+\)set_stats:/\1ansible.builtin.set_stats:/gc
+  % s/^\(\s\+\)setup:/\1ansible.builtin.setup:/gc
+  % s/^\(\s\+\)shell:/\1ansible.builtin.shell:/gc
+  % s/^\(\s\+\)slurp:/\1ansible.builtin.slurp:/gc
+  % s/^\(\s\+\)stat:/\1ansible.builtin.stat:/gc
+  % s/^\(\s\+\)subversion:/\1ansible.builtin.subversion:/gc
+  % s/^\(\s\+\)systemd:/\1ansible.builtin.systemd:/gc
+  % s/^\(\s\+\)systemd_service:/\1ansible.builtin.systemd_service:/gc
+  % s/^\(\s\+\)sysvinit:/\1ansible.builtin.sysvinit:/gc
+  % s/^\(\s\+\)tempfile:/\1ansible.builtin.tempfile:/gc
+  % s/^\(\s\+\)template:/\1ansible.builtin.template:/gc
+  % s/^\(\s\+\)unarchive:/\1ansible.builtin.unarchive:/gc
+  % s/^\(\s\+\)uri:/\1ansible.builtin.uri:/gc
+  % s/^\(\s\+\)user:/\1ansible.builtin.user:/gc
+  % s/^\(\s\+\)validate_argument_spec:/\1ansible.builtin.validate_argument_spec:/gc
+  % s/^\(\s\+\)wait_for:/\1ansible.builtin.wait_for:/gc
+  % s/^\(\s\+\)wait_for_connection:/\1ansible.builtin.wait_for_connection:/gc
+  % s/^\(\s\+\)yum:/\1ansible.builtin.yum:/gc
+  % s/^\(\s\+\)yum_repository:/\1ansible.builtin.yum_repository:/gc
+
+  " ansible.posix
+  %s/^\(\s\+\)acl:/\1ansible.posix.acl:/gc
+  %s/^\(\s\+\)at:/\1ansible.posix.at:/gc
+  %s/^\(\s\+\)authorized_key:/\1ansible.posix.authorized_key:/gc
+  %s/^\(\s\+\)firewalld:/\1ansible.posix.firewalld:/gc
+  %s/^\(\s\+\)firewalld_info:/\1ansible.posix.firewalld_info:/gc
+  %s/^\(\s\+\)mount:/\1ansible.posix.mount:/gc
+  %s/^\(\s\+\)patch:/\1ansible.posix.patch:/gc
+  %s/^\(\s\+\)seboolean:/\1ansible.posix.seboolean:/gc
+  %s/^\(\s\+\)selinux:/\1ansible.posix.selinux:/gc
+  %s/^\(\s\+\)synchronize:/\1ansible.posix.synchronize:/gc
+  %s/^\(\s\+\)sysctl:/\1ansible.posix.sysctl:/gc
+
+  %s/^\(\s\+\)cli_parse:/\1ansible.utils.cli_parse:/gc
+  %s/^\(\s\+\)fact_diff:/\1ansible.utils.fact_diff:/gc
+  %s/^\(\s\+\)update_fact:/\1ansible.utils.update_fact:/gc
+  %s/^\(\s\+\)acme_account:/\1community.crypto.acme_account:/gc
+  %s/^\(\s\+\)acme_account_info:/\1community.crypto.acme_account_info:/gc
+  %s/^\(\s\+\)acme_certificate:/\1community.crypto.acme_certificate:/gc
+  %s/^\(\s\+\)acme_certificate_revoke:/\1community.crypto.acme_certificate_revoke:/gc
+  %s/^\(\s\+\)acme_challenge_cert_helper:/\1community.crypto.acme_challenge_cert_helper:/gc
+  %s/^\(\s\+\)acme_inspect:/\1community.crypto.acme_inspect:/gc
+  %s/^\(\s\+\)certificate_complete_chain:/\1community.crypto.certificate_complete_chain:/gc
+  %s/^\(\s\+\)crypto_info:/\1community.crypto.crypto_info:/gc
+  %s/^\(\s\+\)ecs_certificate:/\1community.crypto.ecs_certificate:/gc
+  %s/^\(\s\+\)ecs_domain:/\1community.crypto.ecs_domain:/gc
+  %s/^\(\s\+\)get_certificate:/\1community.crypto.get_certificate:/gc
+  %s/^\(\s\+\)luks_device:/\1community.crypto.luks_device:/gc
+  %s/^\(\s\+\)openssh_cert:/\1community.crypto.openssh_cert:/gc
+  %s/^\(\s\+\)openssh_keypair:/\1community.crypto.openssh_keypair:/gc
+  %s/^\(\s\+\)openssl_csr:/\1community.crypto.openssl_csr:/gc
+  %s/^\(\s\+\)openssl_csr_info:/\1community.crypto.openssl_csr_info:/gc
+  %s/^\(\s\+\)openssl_csr_pipe:/\1community.crypto.openssl_csr_pipe:/gc
+  %s/^\(\s\+\)openssl_dhparam:/\1community.crypto.openssl_dhparam:/gc
+  %s/^\(\s\+\)openssl_pkcs12:/\1community.crypto.openssl_pkcs12:/gc
+  %s/^\(\s\+\)openssl_privatekey:/\1community.crypto.openssl_privatekey:/gc
+  %s/^\(\s\+\)openssl_privatekey_convert:/\1community.crypto.openssl_privatekey_convert:/gc
+  %s/^\(\s\+\)openssl_privatekey_info:/\1community.crypto.openssl_privatekey_info:/gc
+  %s/^\(\s\+\)openssl_privatekey_pipe:/\1community.crypto.openssl_privatekey_pipe:/gc
+  %s/^\(\s\+\)openssl_publickey:/\1community.crypto.openssl_publickey:/gc
+  %s/^\(\s\+\)openssl_publickey_info:/\1community.crypto.openssl_publickey_info:/gc
+  %s/^\(\s\+\)openssl_signature:/\1community.crypto.openssl_signature:/gc
+  %s/^\(\s\+\)openssl_signature_info:/\1community.crypto.openssl_signature_info:/gc
+  %s/^\(\s\+\)x509_certificate:/\1community.crypto.x509_certificate:/gc
+  %s/^\(\s\+\)x509_certificate_info:/\1community.crypto.x509_certificate_info:/gc
+  %s/^\(\s\+\)x509_certificate_pipe:/\1community.crypto.x509_certificate_pipe:/gc
+  %s/^\(\s\+\)x509_crl:/\1community.crypto.x509_crl:/gc
+  %s/^\(\s\+\)x509_crl_info:/\1community.crypto.x509_crl_info:/gc
+  %s/^\(\s\+\)virt:/\1community.libvirt.virt:/gc
+  %s/^\(\s\+\)virt_net:/\1community.libvirt.virt_net:/gc
+  %s/^\(\s\+\)virt_pool:/\1community.libvirt.virt_pool:/gc
+endfunction
+
+command! ExpandFQCN call ExpandAnsibleFQCN()
+
