@@ -1,3 +1,3 @@
 # dotfiles
 
-Dotfiles based on [https://www.chezmoi.io/](chezmoi framework).
+Dotfiles based on [chezmoi framework](https://www.chezmoi.io/)
