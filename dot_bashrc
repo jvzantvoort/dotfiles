@@ -71,6 +71,27 @@ function clean_ssh() {
   fi
 }
 
+function _mkdirp() {
+  local directory="$1"
+  shift
+  local text="$*"
+
+  # ANSI escape codes
+  local red='\033[32m'
+  local reset='\033[0m'
+
+  # Replace all instances of the directory with red-colored version
+  text="${text//${directory}/${red}${directory}${reset}}"
+
+  if [[ -d "${directory}" ]]; then
+    return
+  fi
+
+  printf "* create directory %b\n" "$text" | fold -s -w 80
+  mkdir -p "${directory}"
+
+}
+
 # ---------------------------------------------------------------------------- #
 #                                  Completion                                  #
 # ---------------------------------------------------------------------------- #
@@ -158,6 +179,7 @@ if command -v path_clean >/dev/null 2>&1; then
 fi
 
 pathmunge "${HOME}/neovim/bin"
+pathmunge "$HOME/node_modules/.bin"
 
 export PATH
 
@@ -196,6 +218,42 @@ if [[ "$-" =~ i ]]; then
     fortune
     echo
   fi
+
+  # XDG settings
+  # --------------------------------------
+  if [[ -z "${XDG_CONFIG_HOME}" ]]; then
+    export XDG_CONFIG_HOME="$HOME/.config"
+  fi
+
+  if [[ -r "${XDG_CONFIG_HOME}/user-dirs.dirs" ]]; then
+    source "${XDG_CONFIG_HOME}/user-dirs.dirs"
+  else
+    XDG_DESKTOP_DIR="$HOME/Desktop"
+    XDG_DOCUMENTS_DIR="$HOME/Documents"
+    XDG_DOWNLOAD_DIR="$HOME/Downloads"
+    XDG_MUSIC_DIR="$HOME/Music"
+    XDG_PICTURES_DIR="$HOME/Pictures"
+    XDG_PUBLICSHARE_DIR="$HOME/Public"
+    XDG_TEMPLATES_DIR="$HOME/Templates"
+    XDG_VIDEOS_DIR="$HOME/Videos"
+
+  fi
+
+  export XDG_CONFIG_HOME XDG_DESKTOP_DIR XDG_DOCUMENTS_DIR XDG_DOWNLOAD_DIR \
+         XDG_MUSIC_DIR XDG_PICTURES_DIR XDG_PUBLICSHARE_DIR XDG_TEMPLATES_DIR \
+         XDG_VIDEOS_DIR
+
+  _mkdirp "$XDG_CONFIG_HOME" "Ensure needed directory for $XDG_CONFIG_HOME (XDG_CONFIG_HOME)"
+  _mkdirp "$XDG_DESKTOP_DIR" "Ensure needed directory for $XDG_DESKTOP_DIR (XDG_DESKTOP_DIR)"
+  _mkdirp "$XDG_DOCUMENTS_DIR" "Ensure needed directory for $XDG_DOCUMENTS_DIR (XDG_DOCUMENTS_DIR)"
+  _mkdirp "$XDG_DOWNLOAD_DIR" "Ensure needed directory for $XDG_DOWNLOAD_DIR (XDG_DOWNLOAD_DIR)"
+  _mkdirp "$XDG_MUSIC_DIR" "Ensure needed directory for $XDG_MUSIC_DIR (XDG_MUSIC_DIR)"
+  _mkdirp "$XDG_PICTURES_DIR" "Ensure needed directory for $XDG_PICTURES_DIR (XDG_PICTURES_DIR)"
+  _mkdirp "$XDG_PUBLICSHARE_DIR" "Ensure needed directory for $XDG_PUBLICSHARE_DIR (XDG_PUBLICSHARE_DIR)"
+  _mkdirp "$XDG_TEMPLATES_DIR" "Ensure needed directory for $XDG_TEMPLATES_DIR (XDG_TEMPLATES_DIR)"
+  _mkdirp "$XDG_VIDEOS_DIR" "Ensure needed directory for $XDG_VIDEOS_DIR (XDG_VIDEOS_DIR)"
+  # --------------------------------------
+  #
 
   SSH_AGENT=/usr/bin/ssh-agent
   SSH_ADD=/usr/bin/ssh-add
