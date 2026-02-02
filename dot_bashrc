@@ -124,6 +124,8 @@ pathmunge "${HOME}/bin" "after"
 pathmunge "${HOME}/.bashrc.d/bin"
 pathmunge "${HOME}/.local/bin"
 
+pathmunge "/shared/jvzantvoort/bin"
+
 # golang
 pathmunge "${HOME}/go/bin"
 pathmunge "${HOME}/sdk/go/bin"
@@ -295,4 +297,8 @@ if [ -d ~/.bashrc.d ]; then
   done
 fi
 
+export USE_POWERLINE="false"
+
 unset rc
+
+. "$HOME/.cargo/env"
